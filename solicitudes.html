@@ -1,0 +1,136 @@
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="borrarTodasSolicitudes()" 
+    style="padding:10px 20px; background:#FF3B30; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600;">
+    🧹 Borrar todas las solicitudes
+  </button>
+</div>
+
+<div id="lista-solicitudes"></div>
+
+<style>
+  .tabla-solicitudes {
+    width: 95%;
+    max-width: 1000px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-family: 'Montserrat', sans-serif;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  }
+
+  .tabla-solicitudes thead {
+    background: #0A1F3C;
+    color: white;
+    font-size: 1.1rem;
+  }
+
+  .tabla-solicitudes th,
+  .tabla-solicitudes td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  .tabla-solicitudes tbody tr:hover {
+    background: #f2f6ff;
+  }
+
+  .no-solicitudes {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+  }
+
+  /* Botón borrar individual */
+  .btn-borrar {
+    background: #FF3B30;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-borrar:hover {
+    background: #cc2b23;
+  }
+</style>
+
+<script>
+function mostrarSolicitudes() {
+  const cont = document.getElementById("lista-solicitudes");
+  const solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+  if (solicitudes.length === 0) {
+    cont.innerHTML = '<p class="no-solicitudes">No hay solicitudes registradas.</p>';
+    return;
+  }
+
+  solicitudes.sort((a,b)=> new Date(b.fecha) - new Date(a.fecha));
+
+  let html = `
+  <table class="tabla-solicitudes">
+    <thead>
+      <tr>
+        <th>Necesidad</th>
+        <th>Lugar</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+        <th>Teléfono</th>
+        <th>Correo</th>
+        <th>Fecha</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  solicitudes.forEach((s, index) => {
+    html += `
+      <tr>
+        <td>${s.necesidad}</td>
+        <td>${s.lugar}</td>
+        <td>${s.nombre}</td>
+        <td>${s.edad}</td>
+        <td>${s.telefono}</td>
+        <td>${s.correo}</td>
+        <td>${s.fecha}</td>
+        <td><button class="btn-borrar" onclick="borrarSolicitud(${index})">Eliminar</button></td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  cont.innerHTML = html;
+}
+
+/* ======================
+   ELIMINAR UNA SOLICITUD
+======================= */
+function borrarSolicitud(index){
+  let solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+  
+  if(confirm("¿Seguro que deseas eliminar esta solicitud?")){
+    solicitudes.splice(index, 1);
+    localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
+    mostrarSolicitudes();
+  }
+}
+
+/* ======================
+   BORRAR TODAS
+======================= */
+function borrarTodasSolicitudes(){
+  if(confirm("⚠ Esto eliminará TODAS las solicitudes. ¿Continuar?")){
+    localStorage.removeItem("solicitudes");
+    mostrarSolicitudes();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", mostrarSolicitudes);
+</script>

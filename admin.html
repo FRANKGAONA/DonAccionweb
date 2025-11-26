@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - DonAcción</title>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin:0;
+      padding:0;
+      background: linear-gradient( #e6d2d2);
+    }
+    header {
+      background:#032355;
+      background: linear-gradient(#ffffff, #ffffff);
+      padding:15px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    header h1 {
+      margin:0;
+      font-size:1.5rem;
+    }
+    nav {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    nav button {
+      padding:8px 15px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:600;
+      background:#2196F3;
+      color:white;
+      transition:0.3s;
+    }
+    nav button:hover { background:#1976D2; }
+    main {
+      padding:20px;
+    }
+    .logo-hero {
+  animation: latir 1.5s ease-in-out infinite;
+  width: 500px;
+}
+
+@keyframes latir {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  40%{ transform: scale(0.95); }
+  70% { transform: scale(1.05); }
+  100%{ transform: scale(1); }
+
+  
+}
+    .section { display:none; margin-top:20px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { padding:12px; border:1px solid #ddd; text-align:left; }
+    th { background:#0A1F3C; color:white; }
+    .btn-borrar { background:#FF3B30; color:white; border:none; padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:600; }
+    .btn-borrar:hover { background:#cc2b23; }
+    .btn-ajustes { background:#4CAF50; color:white; border:none; padding:6px 10px; border-radius:5px; cursor:pointer; font-weight:600; }
+    .btn-ajustes:hover { background:#388E3C; }
+    #loginContainer { max-width:350px; margin:80px auto; background: linear-gradient(#f8f7f7, #efc6c6); padding:30px; border-radius:50px; box-shadow:0 5px 10px rgba(0,0,0,0.1); }
+    #loginContainer h2 { text-align:center; margin-bottom:30px; font-family:'Poppins', sans-serif; font-size:30px; font-weight:900; color:#222; }
+
+    #loginContainer input { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #bbb; }
+    #loginContainer button { width:100%; padding:10px; margin-top:10px; border:none; border-radius:6px; background: linear-gradient(#f8f7f7, #efc6c6); color:rgb(0, 0, 0); font-weight:600; cursor:pointer; }
+    #loginContainer button:hover { background:#1976D2; }
+    #modal-ajustes { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
+    #modal-ajustes .modal-box { background:white; width:320px; padding:20px; border-radius:12px; }
+    #modal-ajustes .modal-box input { width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #bbb; }
+    #modal-ajustes .modal-box button { width:100%; padding:10px; margin-top:8px; border:none; border-radius:6px; font-weight:600; cursor:pointer; }
+    #modal-ajustes .modal-box button.submit { background:#4CAF50; color:white; }
+    #modal-ajustes .modal-box button.cancel { background:#777; color:white; }
+    .mensaje-inicial { text-align:center; margin:20px; font-weight:600; color:#333; }
+  </style>
+</head>
+<body>
+
+
+
+<!-- LOGIN -->
+<div id="loginContainer">
+  <h2>Login Admin</h2>
+  <div class="mensaje-inicial">
+ Ingresar contraseña:</strong>  </strong>
+</div>
+  <input type="password" id="adminPassword" placeholder="Contraseña">
+  <button onclick="loginAdmin()">Ingresar</button>
+</div>
+<section class="hero"></section>
+<canvas id="hero-particles"></canvas>
+    <img id="heroLogo" src="assets/logo.png.png" alt="Logo" class="logo-hero">
+    </section>
+<!-- ADMIN PANEL -->
+<header style="display:none;" id="adminHeader">
+  <h1>DonAcción</h1>
+  <nav>
+    <button onclick="mostrarSeccion('donaciones')">Donaciones</button>
+    <button onclick="mostrarSeccion('solicitudes')">Solicitudes</button>
+    <button class="btn-ajustes" onclick="abrirModalAjustes()">Ajustes</button>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </nav>
+</header>
+
+<main id="adminMain" style="display:none;">
+  
+  <!-- SECCION DONACIONES -->
+  <div id="donaciones" class="section">
+    <h2>Donaciones</h2>
+    <div style="text-align:center; margin-top:10px;">
+      <button onclick="borrarTodasDonaciones()" class="btn-borrar">🧹 Borrar todas las donaciones</button>
+    </div>
+    <div id="lista-donaciones"></div>
+  </div>
+
+  <!-- SECCION SOLICITUDES -->
+  <div id="solicitudes" class="section">
+    <h2>Solicitudes</h2>
+    <div style="text-align:center; margin-top:10px;">
+      <button onclick="borrarTodasSolicitudes()" class="btn-borrar">🧹 Borrar todas las solicitudes</button>
+    </div>
+    <div id="lista-solicitudes"></div>
+  </div>
+
+</main>
+
+<!-- MODAL AJUSTES -->
+<div id="modal-ajustes">
+  <div class="modal-box">
+    <h3>Ajustes - Cambiar Contraseña</h3>
+    <input type="password" id="nuevaPass" placeholder="Nueva contraseña">
+    <input type="password" id="confirmaPass" placeholder="Confirmar contraseña">
+    <button class="submit" onclick="cambiarContraseña()">Guardar</button>
+    <button class="cancel" onclick="cerrarModalAjustes()">Cancelar</button>
+  </div>
+</div>
+
+<script>
+/* LOGIN */
+document.querySelector(".hero").style.display = "none";
+document.getElementById("hero-particles").style.display = "none";
+function loginAdmin() {
+  const pass = document.getElementById("adminPassword").value;
+  const storedPass = localStorage.getItem("adminPass") || "admin123";
+
+  if(pass === storedPass){
+    document.getElementById("loginContainer").style.display="none";
+    document.getElementById("adminHeader").style.display="flex";
+    document.getElementById("adminMain").style.display="block";
+    
+    // 🔴 OCULTAR LOGO AL INICIAR SESIÓN
+    document.getElementById("heroLogo").style.display = "none";
+
+    mostrarSeccion('donaciones');
+    cargarDonaciones();
+    cargarSolicitudes();
+  } else {
+    alert("Contraseña incorrecta ❌");
+  }
+}
+
+
+
+/* CERRAR SESION */
+function cerrarSesion(){
+  location.reload();
+}
+
+/* MODAL AJUSTES */
+function abrirModalAjustes(){
+  document.getElementById("modal-ajustes").style.display="flex";
+}
+function cerrarModalAjustes(){
+  document.getElementById("modal-ajustes").style.display="none";
+}
+
+/* CAMBIAR CONTRASEÑA */
+function cambiarContraseña(){
+  const n = document.getElementById("nuevaPass").value.trim();
+  const c = document.getElementById("confirmaPass").value.trim();
+  if(!n || !c){
+    alert("Completa ambos campos");
+    return;
+  }
+  if(n!==c){
+    alert("Las contraseñas no coinciden");
+    return;
+  }
+  localStorage.setItem("adminPass", n);
+  alert("Contraseña cambiada ✔. Inicia sesión nuevamente");
+  cerrarModalAjustes();
+  cerrarSesion();
+}
+
+/* SELECCION DE SECCIONES */
+function mostrarSeccion(id){
+  document.querySelectorAll('.section').forEach(s => s.style.display="none");
+  const sec = document.getElementById(id);
+  if(sec) sec.style.display="block";
+  if(id==="donaciones") cargarDonaciones();
+  if(id==="solicitudes") cargarSolicitudes();
+}
+
+/* ================== DONACIONES ================== */
+function asegurarIDs() {
+  let donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+  let cambio = false;
+  donaciones = donaciones.map(d => {
+    if (!d.id) { d.id = Date.now() + Math.floor(Math.random()*999999); cambio=true; }
+    return d;
+  });
+  if(cambio) localStorage.setItem("donaciones", JSON.stringify(donaciones));
+}
+
+function cargarDonaciones(){
+  asegurarIDs();
+  const lista = document.getElementById("lista-donaciones");
+  const donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+  if(donaciones.length===0){ lista.innerHTML='<p>No hay donaciones registradas.</p>'; return; }
+  donaciones.sort((a,b)=> new Date(b.fecha)-new Date(a.fecha));
+  let html=`<table><thead><tr><th>Objeto</th><th>Cantidad</th><th>Donante</th><th>Comentario</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>`;
+  donaciones.forEach(d=>{
+    html+=`<tr>
+      <td>${d.nombre}</td>
+      <td>${d.cantidad}</td>
+      <td>${d.donante||"Anónimo"}</td>
+      <td>${d.comentario||"—"}</td>
+      <td>${d.fecha}</td>
+      <td><button class="btn-borrar" onclick="borrarDonacion(${d.id})">Eliminar</button></td>
+    </tr>`;
+  });
+  html+='</tbody></table>';
+  lista.innerHTML=html;
+}
+function borrarDonacion(id){
+  let donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+  if(confirm("¿Seguro que deseas eliminar esta donación?")){
+    donaciones = donaciones.filter(d=>d.id!==id);
+    localStorage.setItem("donaciones", JSON.stringify(donaciones));
+    cargarDonaciones();
+  }
+}
+function borrarTodasDonaciones(){
+  if(confirm("⚠ Esto eliminará TODAS las donaciones. ¿Continuar?")){
+    localStorage.removeItem("donaciones");
+    cargarDonaciones();
+  }
+}
+
+/* ================== SOLICITUDES ================== */
+function cargarSolicitudes(){
+  const cont = document.getElementById("lista-solicitudes");
+  const solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+  if(solicitudes.length===0){ cont.innerHTML='<p>No hay solicitudes registradas.</p>'; return; }
+  solicitudes.sort((a,b)=> new Date(b.fecha)-new Date(a.fecha));
+  let html=`<table><thead><tr><th>Necesidad</th><th>Lugar</th><th>Nombre</th><th>Edad</th><th>Teléfono</th><th>Correo</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>`;
+  solicitudes.forEach((s,index)=>{
+    html+=`<tr>
+      <td>${s.necesidad}</td>
+      <td>${s.lugar}</td>
+      <td>${s.nombre}</td>
+      <td>${s.edad}</td>
+      <td>${s.telefono}</td>
+      <td>${s.correo}</td>
+      <td>${s.fecha}</td>
+      <td><button class="btn-borrar" onclick="borrarSolicitud(${index})">Eliminar</button></td>
+    </tr>`;
+  });
+  html+='</tbody></table>';
+  cont.innerHTML=html;
+}
+function borrarSolicitud(index){
+  let solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+  if(confirm("¿Seguro que deseas eliminar esta solicitud?")){
+    solicitudes.splice(index,1);
+    localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
+    cargarSolicitudes();
+  }
+}
+function borrarTodasSolicitudes(){
+  if(confirm("⚠ Esto eliminará TODAS las solicitudes. ¿Continuar?")){
+    localStorage.removeItem("solicitudes");
+    cargarSolicitudes();
+  }
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+

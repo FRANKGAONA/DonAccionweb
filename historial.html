@@ -1,0 +1,138 @@
+<div style="text-align:center; margin-top:20px;">
+  <button onclick="borrarTodasDonaciones()" 
+    style="padding:10px 20px; background:#FF3B30; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600;">
+    🧹 Borrar todas las donaciones
+  </button>
+</div>
+
+<div id="lista-donaciones"></div>
+
+<style>
+  .tabla-donaciones {
+    width: 95%;
+    max-width: 900px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-family: 'Montserrat', sans-serif;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  }
+
+  .tabla-donaciones thead {
+    background: #0A1F3C;
+    color: white;
+    font-size: 1.1rem;
+  }
+
+  .tabla-donaciones th,
+  .tabla-donaciones td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+
+  .tabla-donaciones tbody tr:hover {
+    background: #f2f6ff;
+  }
+
+  .no-don {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 40px;
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+  }
+
+  .btn-borrar {
+    background: #FF3B30;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-borrar:hover {
+    background: #cc2b23;
+  }
+</style>
+
+<script>
+/* ==============================================
+   MOSTRAR DONACIONES
+================================================ */
+function mostrarDonaciones() {
+  const lista = document.getElementById("lista-donaciones");
+  const donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+
+  if (donaciones.length === 0) {
+    lista.innerHTML = '<p class="no-don">No hay donaciones registradas.</p>';
+    return;
+  }
+
+  // ordenar por fecha descendente
+  donaciones.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+  let html = `
+    <table class="tabla-donaciones">
+      <thead>
+        <tr>
+          <th>Objeto</th>
+          <th>Cantidad</th>
+          <th>Donante</th>
+          <th>Comentario</th>
+          <th>Fecha</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  donaciones.forEach((d, index) => {
+    html += `
+      <tr>
+        <td><strong>${d.nombre}</strong></td>
+        <td>${d.cantidad}</td>
+        <td>${d.donante || "Anónimo"}</td>
+        <td>${d.comentario || "—"}</td>
+        <td>${d.fecha}</td>
+        <td>
+          <button class="btn-borrar" onclick="borrarDonacion(${index})">Eliminar</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  lista.innerHTML = html;
+}
+
+/* ==============================================
+   ELIMINAR UNA DONACIÓN POR ÍNDICE
+================================================ */
+function borrarDonacion(index){
+  let donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+
+  if(confirm("¿Seguro que deseas eliminar esta donación?")){
+    donaciones.splice(index, 1);
+    localStorage.setItem("donaciones", JSON.stringify(donaciones));
+    mostrarDonaciones();
+  }
+}
+
+/* ==============================================
+   ELIMINAR TODAS
+================================================ */
+function borrarTodasDonaciones(){
+  if(confirm("⚠ Esto eliminará TODAS las donaciones. ¿Continuar?")){
+    localStorage.removeItem("donaciones");
+    mostrarDonaciones();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", mostrarDonaciones);
+</script>
+

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 {
+            color: #3b4cca;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b4cca;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3b4cca;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #2d3a99;
+        }
+
+        a {
+            color: #3b4cca;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Crear Cuenta</h2>
+
+    <form id="form-registro" onsubmit="event.preventDefault(); registrarUsuario();">
+
+        <input type="text" id="nombres" placeholder="Nombres" required>
+        <input type="text" id="apellidos" placeholder="Apellidos" required>
+        <input type="text" id="dni" placeholder="DNI" maxlength="8" required>
+        <input type="email" id="correo" placeholder="Correo electrónico" required>
+        <input type="text" id="telefono" placeholder="Teléfono" maxlength="9" required>
+        <input type="text" id="usuario" placeholder="Nombre de usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+
+        <button type="submit">Registrarse</button>
+
+        <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+    </form>
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+function registrarUsuario() {
+
+    let usuario = {
+        nombres: document.getElementById("nombres").value,
+        apellidos: document.getElementById("apellidos").value,
+        dni: document.getElementById("dni").value,
+        correo: document.getElementById("correo").value,
+        telefono: document.getElementById("telefono").value,
+        usuario: document.getElementById("usuario").value,
+        password: document.getElementById("password").value
+    };
+
+    // Guardar en base temporal
+    localStorage.setItem("datosUsuario", JSON.stringify(usuario));
+
+    alert("Registro exitoso. Sesión iniciada.");
+
+    // Activar sesión
+    localStorage.setItem("usuarioLogeado", usuario.correo);
+
+    // Redirigir al inicio
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
+<script src="auth.js"></script>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DonAcción - Donar Ropa</title>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+      (function() {
+          emailjs.init("pOXaU68KAcH71NS9M"); 
+      })();
+  </script>
+
+  <style>
+    /* ======= ESTILOS ======= */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+    body { min-height: 100vh; background: linear-gradient(to bottom, #ffffff, #cce0ff); display: flex; flex-direction: column; }
+
+    header {
+      width: 100%; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 60px; position: fixed; top: 0; z-index: 100;
+    }
+    .logo { color: #0A1F3C; font-size: 1.6rem; font-weight: 700; }
+    nav ul { display: flex; list-style: none; gap: 25px; }
+    nav ul li a { text-decoration: none; color: #0A1F3C; font-weight: 500; }
+
+    main {
+      margin-top: 120px; flex: 1; display: flex; flex-direction: column;
+      align-items: center; text-align: center; padding: 40px;
+    }
+    h1 { font-size: 2.5rem; color: #0A1F3C; margin-bottom: 20px; }
+    p { color: #333; max-width: 700px; margin-bottom: 50px; line-height: 1.6; font-size: 1.1rem; }
+
+    .categorias {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px; width: 100%; max-width: 1100px;
+    }
+
+    .card {
+      background-color: white; border-radius: 20px; padding: 20px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1); transition: 0.3s; text-align: center;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card img { width: 100%; height: 220px; object-fit: cover; border-radius: 15px; }
+
+    .card button {
+      background-color: #FF3B30; border: none; padding: 10px 20px; border-radius: 10px;
+      color: white; font-weight: 600; cursor: pointer; margin: 5px 0;
+    }
+
+    footer {
+      background-color: #f8f8f8; color: white; text-align: center;
+      padding: 20px; font-size: 0.9rem; margin-top: 50px;
+    }
+
+    /* ===== MODALES ===== */
+    .modal {
+      display:none; position: fixed; top:0; left:0; width:100%; height:100%;
+      background:linear-gradient(#f8f7f7, #efc6c6); justify-content:center; align-items:center; z-index:1000;
+    }
+    .modal-box {
+      background: linear-gradient(#f8f7f7, #efc6c6);; width:340px; padding:20px; border-radius:30px;
+    }
+    .modal-box input, .modal-box textarea {
+      width:100%; padding:7px; margin:3px 0; border-radius:6px; border:0px solid #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<script src="auth.js"></script>
+<script> protegerPagina(); </script>
+
+<header>
+  <div class="logo">DonAcción</div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="alimentos.html">Alimentos</a></li>
+      <li><a href="juguetes.html">Juguetes</a></li>
+      <li><a href="login.html">Iniciar Sesión</a></li>
+      <li><a href="registro.html">Registrarse</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>Dona Ropa y Cambia Vidas</h1>
+  <p>Tu donación puede abrigar a alguien que lo necesita. ¡Cada prenda cuenta!</p>
+
+  <div class="categorias">
+
+    <div class="card">
+      <img src="assets/donacion-ropa1.jpg.jpeg">
+      <h3>Prendas de vestir</h3>
+      <button class="btn-donar">Donar</button>
+      <button class="btn-solicitar">Solicitar Donación</button>
+    </div>
+
+    <div class="card">
+      <img src="assets/donacion-calzado.jpg.jpeg">
+      <h3>Calzado</h3>
+      <button class="btn-donar">Donar</button>
+      <button class="btn-solicitar">Solicitar Donación</button>
+    </div>
+
+    <div class="card">
+      <img src="assets/donacion-accesorios.jpg.jpeg">
+      <h3>Accesorios</h3>
+      <button class="btn-donar">Donar</button>
+      <button class="btn-solicitar">Solicitar Donación</button>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2025 DonAcción - Unidos por una causa.
+</footer>
+
+
+<!-- =============== MODAL DONAR =============== -->
+<div id="modal-donar" class="modal">
+  <div class="modal-box">
+    <h2>Donar Prenda</h2>
+
+    <label>Nombre del objeto:</label>
+    <input id="donar-nombre">
+
+    <label>Cantidad:</label>
+    <input id="donar-cantidad" type="number">
+
+    <label>Comentario:</label>
+    <textarea id="donar-comentario" rows="3"></textarea>
+
+    <button onclick="enviarDonacion()"  style="background:#000000;color:white;width:100%;padding:10px;border:none;outline:none;border-radius:10px;">Enviar</button>
+    <button onclick="cerrarModalDonar()" style="background:#ffeded;color:rgb(0, 0, 0);width:100%;padding:10px;margin-top:10px;border-radius:80px";border:20px solid #ffffff>Cancelar</button>
+  </div>
+</div>
+
+<!-- =============== MODAL SOLICITAR =============== -->
+<div id="modal-solicitar" class="modal">
+  <div class="modal-box">
+    <h2>Solicitar Donación</h2>
+
+    <label>¿Qué necesitas?</label>
+    <input id="solicita-objeto">
+
+    <label>Lugar</label><label for="lugar">Lugar:</label>
+<select id="lugar" name="lugar" required>
+    <option value="">Seleccione un lugar</option>
+    <option>Cajamarca</option>
+    <option>Asunción</option>
+    <option>Chetilla</option>
+    <option>Cospán</option>
+    <option>Encañada</option>
+    <option>Jesús</option>
+    <option>Llacanora</option>
+    <option>Los Baños del Inca</option>
+    <option>Magdalena</option>
+    <option>Matara</option>
+    <option>Namora</option>
+    <option>San Juan</option>
+</select>
+
+    <input id="solicita-lugar">
+
+    <label>Nombre:</label>
+    <input id="solicita-nombre">
+
+    <label>Edad:</label>
+    <input id="solicita-edad" type="number">
+
+    <label>Teléfono:</label>
+    <input id="solicita-telefono">
+
+    <label>Correo electrónico:</label>
+    <input id="solicita-correo" type="email">
+
+   <button onclick="enviarSolicitudDonacion()" 
+        style="background:#000000;color:white;width:100%;padding:10px;border:none;outline:none;border-radius:10px;">
+    Enviar
+</button>
+
+<button onclick="cerrarModalSolicitud()" 
+        style="background:#777;color:white;width:100%;padding:10px;margin-top:5px;border:none;outline:none;border-radius:10px;">
+    Cancelar
+</button>
+  </div>
+</div>
+<script>
+/* ==========================================
+   🔥 BASE DE DATOS LOCAL PARA DONACIONES
+========================================== */
+let donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+
+
+/* =================== MODAL DONAR =================== */
+document.querySelectorAll(".btn-donar").forEach(btn=>{
+  btn.onclick = ()=> document.getElementById("modal-donar").style.display="flex";
+});
+
+function cerrarModalDonar(){
+  document.getElementById("modal-donar").style.display="none";
+}
+
+/* ============ GUARDAR DONACIÓN ============ */
+function enviarDonacion(){
+  let nombre = document.getElementById("donar-nombre").value.trim();
+  let cant   = document.getElementById("donar-cantidad").value.trim();
+  let com    = document.getElementById("donar-comentario").value.trim();
+
+  if(!nombre || !cant){
+    alert("Completa nombre y cantidad");
+    return;
+  }
+
+  // 🔥 Solución: cargar lo que ya existe
+  let donaciones = JSON.parse(localStorage.getItem("donaciones")) || [];
+
+  let nueva = {
+    nombre,
+    cantidad: cant,
+    comentario: com,
+    fecha: new Date().toLocaleString(),
+  };
+
+  donaciones.push(nueva);
+
+  localStorage.setItem("donaciones", JSON.stringify(donaciones));
+
+  alert("Donación enviada correctamente ✔");
+  cerrarModalDonar();
+}
+
+
+/* =================== MODAL SOLICITAR =================== */
+document.querySelectorAll(".btn-solicitar").forEach(btn=>{
+  btn.onclick = ()=> document.getElementById("modal-solicitar").style.display="flex";
+});
+
+function cerrarModalSolicitud(){
+  document.getElementById("modal-solicitar").style.display="none";
+}
+
+/* ========= 🟢 GUARDAR SOLICITUD + EMAILJS ============ */
+function enviarSolicitudDonacion(){
+
+  let data = {
+    necesidad: document.getElementById("solicita-objeto").value.trim(),
+    lugar: document.getElementById("solicita-lugar").value.trim(),
+    nombre: document.getElementById("solicita-nombre").value.trim(),
+    edad: document.getElementById("solicita-edad").value.trim(),
+    telefono: document.getElementById("solicita-telefono").value.trim(),
+    correo: document.getElementById("solicita-correo").value.trim(),
+    fecha: new Date().toLocaleString()
+  };
+
+  if(!data.necesidad || !data.lugar || !data.nombre || !data.correo){
+    alert("Por favor completa los campos obligatorios.");
+    return;
+  }
+
+  let solicitudes = JSON.parse(localStorage.getItem("solicitudes")) || [];
+  solicitudes.push(data);
+  localStorage.setItem("solicitudes", JSON.stringify(solicitudes));
+
+  emailjs.send("service_dlivkyq", "template_mfv5ql8", data)
+  .then(()=>{
+    alert("Solicitud enviada ✔");
+    cerrarModalSolicitud();
+  })
+  .catch(err=>{
+    alert("Error ❌ al enviar el correo");
+    console.log(err);
+  });
+}
+
+</script>
+<script>
+document.getElementById("lugar").addEventListener("change", function () {
+    document.getElementById("solicita-lugar").value = this.value;
+});
+</script>
+
+
+</body>
+</html>
+

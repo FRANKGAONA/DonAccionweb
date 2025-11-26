@@ -1,0 +1,294 @@
+:root {
+  --rojo-logo: #FF3B30;
+  --azul-oscuro-logo: #0A1F3C;
+  background: linear-gradient(#f8f7f7, #efc6c6);
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--blanco);
+  color: var(--azul-oscuro-logo);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+.nombre-empresa {
+font-size: 1.8rem;
+font-weight: 700;
+color: var(--azul-oscuro-logo);
+}
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: var(--blanco);
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 5px rgba(218, 214, 214, 0.05);
+  z-index: 1000;
+}
+
+header img {
+  height: 60px;
+  transition: transform 0.3s ease;
+}
+
+header img:hover {
+  transform: scale(1.05);
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--azul-oscuro-logo);
+  margin-left: 30px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--rojo-logo);
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 20px 0;
+  z-index: 2;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.btn-donar {
+    background-color: #ff5252;     /* Fondo rojo moderno */
+    color: white;                  /* Texto blanco */
+    padding: 14px 28px;            /* Tamaño */
+    border: none;                  /* Sin borde */
+    border-radius: 50px;           /* Bordes redondeados */
+    font-size: 18px;               /* Tamaño del texto */
+    font-weight: 600;              /* Texto grueso */
+    cursor: pointer;               /* Mano al pasar */
+    transition: 0.3s ease;         /* Animación */
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.20); /* Sombra */
+}
+
+.btn-donar:hover {
+    background-color: #db1010;     /* Color más oscuro al pasar */
+    transform: scale(1.05);        /* Efecto zoom */
+}
+
+/* Categorías */
+.categorias {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.categoria-card {
+  background-color: var(--blanco);
+  border: 1px solid #eee;
+  border-radius: 15px;
+  padding: 30px;
+  width: 200px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.categoria-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.categoria-card h3 {
+  color: var(--azul-oscuro-logo);
+  margin-top: 20px;
+}
+
+.icono-animado {
+  transition: transform 0.4s;
+}
+
+.icono-animado:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+/* Cómo funciona */
+.pasos {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.paso {
+  max-width: 200px;
+  text-align: center;
+}
+
+.paso h4 {
+  color: var(--rojo-logo);
+  margin: 15px 0;
+}
+
+/* Footer */
+footer {
+  background-color: var(--azul-oscuro-logo);
+  color: #eee;
+  padding: 40px 50px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+footer a {
+  color: #eee;
+  text-decoration: #eee;
+  margin-right: 20px;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: #eee;
+}
+
+/* Animaciones */
+.logo-hero {
+  animation: latir 1.5s ease-in-out infinite;
+  width: 500px;
+}
+
+@keyframes latir {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  40%{ transform: scale(0.95); }
+  60% { transform: scale(1.05); }
+  100%{ transform: scale(1); }
+
+  
+}
+
+/* Fade-in y parallax */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.parallax {
+  background-attachment: fixed;
+}
+
+/* Partículas canvas */
+#hero-particles {
+  position: absolute;
+  top:0;
+  left:0;
+  width:800%;
+  height:800%;
+  z-index:1;
+}
+.categoria-card img {
+width: 100;
+height: 133px;
+object-fit: cover;
+border-radius: 12px;
+}
+.modal-box {
+  background:white;
+  width:380px;            /* más ancho */
+  padding:30px;           /* más espacio interno */
+  border-radius:18px;     /* bordes más suaves */
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);  /* sombra profesional */
+  animation: fadeIn 0.25s ease-out;         /* animación elegante */
+}
+
+.modal-box h2 {
+  margin-bottom:15px; 
+  font-size:22px;
+  color:#0A1F3C;
+  text-align:center;
+}
+
+.modal-box input,
+.modal-box textarea {
+  width:100%;
+  padding:10px;
+  margin:10px 0 15px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+@keyframes fadeIn {
+  from { opacity:0; transform:scale(0.95); }
+  to   { opacity:1; transform:scale(1); }
+}
+/* --------------------------- */
+/* ------ FORMATO MÓVIL ------ */
+/* --------------------------- */
+
+@media (max-width: 768px) {
+
+  /* Ajusta el logo si es necesario */
+  .nombre-empresa {
+    font-size: 1.4rem;
+  }
+
+  /* Hacer que el nav se acomode en celular */
+  nav {
+    padding: 10px 20px;
+  }
+
+  /* Ocultar los links y luego reactivarlos con hamburguesa */
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  }
+
+  nav ul.activo {
+    display: flex;
+  }
+
+  /* Botón menú hamburguesa */
+  .menu-btn {
+    display: block;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--azul-oscuro-logo);
+  }
+}
+
+/* En PC no se ve el botón */
+.menu-btn {
+  display: none;
+}
+
+
