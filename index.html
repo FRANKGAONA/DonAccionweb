@@ -16,14 +16,14 @@
       <a id="btn-login">Iniciar Sesión</a>
       <a id="btn-registrarse">Registrarse</a>
       <a href="#contacto">Contacto</a>
-      <a href="#" id="btn-cerrar-sesion">Cerrar Sesión</a> 
+      <button id="btn-cerrar-sesion">Cerrar sesión</button>
     </nav>
   </header>
 
   <!-- Hero -->
   <section class="hero">
     <canvas id="hero-particles"></canvas>
-    <img src="logo.png" alt="Logo" class="logo-hero">
+    <img src="assets/logo.png.png" alt="Logo" class="logo-hero">
     <h1>Ayuda a quienes más lo necesitan</h1>
     <p>Únete a nuestra plataforma y realiza donaciones de manera segura, rápida y confiable.</p>
   </section>
@@ -32,37 +32,22 @@
   <section id="categorias" class="fade-in parallax">
     <h2>Categorías de Donación</h2>
     <div class="categorias">
-      <a href="ropa.html" class="categoria-card protected-link">
-        <img src="donacion-ropa.jpg.jpeg" alt="Ropa" class="icono-animado">
+
+      <a href="ropa.html" class="categoria-card" id="btn-ropa">
+        <img src="assets/donacion-ropa.jpg.jpeg" alt="Ropa" class="icono-animado">
         <h3>Ropa</h3>
       </a>
-      <a href="alimentos.html" class="categoria-card protected-link">
-        <img src="donacion-alimentos.jpg.jpeg" alt="Alimentos" class="icono-animado">
+
+      <a href="alimentos.html" class="categoria-card" id="btn-alimentos">
+        <img src="assets/donacion-alimentos.jpg.jpeg" alt="Alimentos" class="icono-animado">
         <h3>Alimentos</h3>
       </a>
-      <a href="juguetes.html" class="categoria-card protected-link">
-        <img src="donacion-juguetes.jpg.jpeg" alt="Juguetes" class="icono-animado">
+
+      <a href="juguetes.html" class="categoria-card" id="btn-juguetes">
+        <img src="assets/donacion-juguetes.jpg.jpeg" alt="Juguetes" class="icono-animado">
         <h3>Juguetes</h3>
       </a>
-    </div>
-  </section>
 
-  <!-- Cómo funciona -->
-  <section id="como-funciona" class="fade-in parallax">
-    <h2>Cómo Funciona</h2>
-    <div class="pasos">
-      <div class="paso">
-        <h4>Donar</h4>
-        <p>Selecciona la categoría y la cantidad que deseas donar.</p>
-      </div>
-      <div class="paso">
-        <h4>Entregar</h4>
-        <p>Envía tus donaciones de forma segura.</p>
-      </div>
-      <div class="paso">
-        <h4>Ayudar</h4>
-        <p>Tu donación llega a quienes más lo necesitan.</p>
-      </div>
     </div>
   </section>
 
@@ -78,33 +63,27 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="script.js"></script>
   <script src="cerrarsesion.js"></script>
   <script>
-    // Botones de login y registro
-    document.getElementById("btn-login").onclick = () => window.location.href = "login.html";
-    document.getElementById("btn-registrarse").onclick = () => window.location.href = "registro.html";
+    // Botón INICIAR SESIÓN
+    document.getElementById("btn-login").onclick = function() {
+      window.location.href = "login.html";
+    };
 
-    // Proteger enlaces de categorías
-    document.querySelectorAll(".protected-link").forEach(link => {
-      link.addEventListener("click", function(e) {
-        const usuario = localStorage.getItem("usuarioLogeado");
-        if (usuario !== "si") {
-          e.preventDefault();
-          alert("Debes iniciar sesión para acceder.");
-          window.location.href = "login.html";
-        }
-      });
-    });
+    // Botón REGISTRARSE
+    document.getElementById("btn-registrarse").onclick = function() {
+      window.location.href = "registro.html";
+    };
 
     // Menú hamburguesa
     const btn = document.querySelector('.menu-btn');
     const menu = document.querySelector('nav ul');
-    btn.addEventListener('click', () => menu.classList.toggle('activo'));
+    if(btn && menu){
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('activo');
+      });
+    }
   </script>
 </body>
 </html>
-
-
-
-
-
