@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-<script>
-  (function(){
-      emailjs.init("pOXaU68KAcH71NS9M"); // TU PUBLIC KEY
-  })();
-</script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donaciones Profesionales</title>
@@ -23,11 +13,10 @@
     <div class="nombre-empresa">DonAcción</div>
     <nav>
       <div class="menu-btn">☰</div>
-      </ul>
       <a id="btn-login">Iniciar Sesión</a>
       <a id="btn-registrarse">Registrarse</a>
       <a href="#contacto">Contacto</a>
-      <a href= "#" id="btn-cerrar-sesion" style =>Cerrar Sesión</a> 
+      <a href="#" id="btn-cerrar-sesion">Cerrar Sesión</a> 
     </nav>
   </header>
 
@@ -37,32 +26,24 @@
     <img src="logo.png" alt="Logo" class="logo-hero">
     <h1>Ayuda a quienes más lo necesitan</h1>
     <p>Únete a nuestra plataforma y realiza donaciones de manera segura, rápida y confiable.</p>
-
-    <!-- Botón Donar: usa la función requerirSesion() -->
- 
   </section>
 
   <!-- Categorías -->
   <section id="categorias" class="fade-in parallax">
     <h2>Categorías de Donación</h2>
     <div class="categorias">
-
-      <!-- Estas páginas serán protegidas después -->
-      <a href="ropa.html" class="categoria-card">
+      <a href="ropa.html" class="categoria-card protected-link">
         <img src="donacion-ropa.jpg.jpeg" alt="Ropa" class="icono-animado">
         <h3>Ropa</h3>
       </a>
-
-      <a href="alimentos.html" class="categoria-card">
+      <a href="alimentos.html" class="categoria-card protected-link">
         <img src="donacion-alimentos.jpg.jpeg" alt="Alimentos" class="icono-animado">
         <h3>Alimentos</h3>
       </a>
-
-      <a href="juguetes.html" class="categoria-card">
-        <img src="donacion-juguetes.jpg.jpeg"alt="Juguetes" class="icono-animado">
+      <a href="juguetes.html" class="categoria-card protected-link">
+        <img src="donacion-juguetes.jpg.jpeg" alt="Juguetes" class="icono-animado">
         <h3>Juguetes</h3>
       </a>
-
     </div>
   </section>
 
@@ -96,35 +77,34 @@
     <p>© 2025 Donaciones Profesionales. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Animaciones -->
-  <script src="script.js"></script>
-  <script src="script.js"></script>
-
+  <!-- Scripts -->
+  <script src="cerrarsesion.js"></script>
   <script>
+    // Botones de login y registro
+    document.getElementById("btn-login").onclick = () => window.location.href = "login.html";
+    document.getElementById("btn-registrarse").onclick = () => window.location.href = "registro.html";
 
-    // Botón INICIAR SESIÓN
-    document.getElementById("btn-login").onclick = function() {
-      window.location.href = "login.html";
-    };
+    // Proteger enlaces de categorías
+    document.querySelectorAll(".protected-link").forEach(link => {
+      link.addEventListener("click", function(e) {
+        const usuario = localStorage.getItem("usuarioLogeado");
+        if (usuario !== "si") {
+          e.preventDefault();
+          alert("Debes iniciar sesión para acceder.");
+          window.location.href = "login.html";
+        }
+      });
+    });
 
-    // Botón REGISTRARSE
-    document.getElementById("btn-registrarse").onclick = function() {
-      window.location.href = "registro.html";
-    };
+    // Menú hamburguesa
+    const btn = document.querySelector('.menu-btn');
+    const menu = document.querySelector('nav ul');
+    btn.addEventListener('click', () => menu.classList.toggle('activo'));
   </script>
-  <script>
-const btn = document.querySelector('.menu-btn');
-const menu = document.querySelector('nav ul');
-
-btn.addEventListener('click', () => {
-  menu.classList.toggle('activo');
-});
-</script>
-
-
 </body>
-
 </html>
+
+
 
 
 
